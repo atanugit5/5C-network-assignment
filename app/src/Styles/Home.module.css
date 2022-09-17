@@ -1,0 +1,117 @@
+/* form css */
+.form {
+  margin: 1.5rem;
+}
+.form > input {
+  font-size: 1.5rem;
+}
+.form > input:last-child {
+  color: white;
+  background-color: black;
+}
+.form > input:last-child:hover {
+  color: black;
+  background-color: white;
+}
+
+
+/* user css */
+.userDetails {
+  width: 80%;
+  margin: auto;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+.userDetails > img {
+  width: 220px;
+  height: 250px;
+  border-radius: 20px;
+}
+.userDetails > div > {
+  padding-top: 20px;
+}
+.userDetails > div > button {
+  width: 180px;
+  height: 50px;
+  border-radius: 20px;
+  font-size: 2rem;
+}
+.userDetails > div > button:hover {
+  color: white;
+  background-color: black;
+  cursor: pointer;
+}
+
+/* repopsitories css */
+.repositories {
+  display: grid;
+  width: 80%;
+  margin: auto;
+  gap: 50px;
+  grid-template-columns: repeat(2, 40%);
+  justify-content: space-between;
+  padding: 50px;
+  background-color: whitesmoke;
+  border-radius: 20px;
+}
+.repositories > div {
+  display: flex;
+  gap: 20px;
+}
+.repositories > div > img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.repositories > div > div {
+  text-align: left;
+  margin-top: 0px;
+}
+.repositories > div > div > h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: rgb(82, 82, 231);
+}
+
+/* followers css */
+.followers {
+  display: grid;
+  width: 80%;
+  margin: auto;
+  gap: 50px;
+  grid-template-columns: repeat(3, 30%);
+  justify-content: space-between;
+  padding: 50px;
+  background-color: whitesmoke;
+  border-radius: 20px;
+}
+.followers > div > a {
+  display: flex;
+  gap: 20px;
+}
+.followers > div > a > img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+}
+.followers > div > a > div {
+  text-align: left;
+  margin-top: 0px;
+}
+.followers > div > a > div > h3 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: rgb(82, 82, 231);
+  text-decoration: none;
+}
+
+/* single repo css */
+.repoIndiv{
+    width: 80%;
+    margin: auto;
+    margin-top: 50px;
+    padding: 30px;
+    border: 2px solid brown;
+    border-radius: 20px;
+}
