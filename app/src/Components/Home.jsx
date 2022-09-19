@@ -9,7 +9,7 @@ const Home = () => {
   const [user, setUser] = useState("");
   // const [data, setData] = useState([]);
   // const [follwers, setFollwers] = useState([]);
-  const [repo, setRepo] = useState({});
+  const [repo, setRepo] = useState(true);
 
 
   const dispatch=useDispatch();
@@ -21,13 +21,14 @@ const Home = () => {
   const [dataStatus, setDataStatus] = useState(false);
   const [follwerStatus, setFollowerStatus] = useState(false);
   const [repoStatus, setRepoStatus] = useState(false);
+  const [status, setStatus] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("User:", user);
 
     dispatch(userFunc(user));
-
+    dispatch(followerFunc(user));
     // axios
     //   .get(`https://api.github.com/users/${user}/repos`)
     //   .then((res) => {
@@ -35,13 +36,14 @@ const Home = () => {
     //     setData(res.data);
     //   })
     //   .then((err) => console.log("Error:", err));
+    setStatus(true)
     setDataStatus(true);
     setFollowerStatus(false);
     setRepoStatus(false);
   };
 
   const handleFollowers = () => {
-    dispatch(followerFunc(user));
+    // dispatch(followerFunc(user));
     // axios.get(data[0]?.owner?.followers_url).then((res) => {
     //   console.log("folowersRes:", res);
     //   setFollwers(res.data);
@@ -49,6 +51,7 @@ const Home = () => {
     setDataStatus(false);
     setFollowerStatus(true);
     setRepoStatus(false);
+    setRepo(!repo);
   };
 
   return (
@@ -65,17 +68,19 @@ const Home = () => {
       </div>
 
       {/* repositories list section */}
+      {status &&
+      <div className={style.userDetails}>
+            <img src={data[0]?.owner.avatar_url} alt="" />
+            <div>
+              <h1>{data[0]?.owner.login}</h1>
+              <button onClick={handleFollowers}>{repo?"Followers":"Repositories"}</button>
+            </div>
+          </div>
+      }
       {dataStatus && (
         <div className={style.reposDiv}>
           {loading && <h1 style={{color:"green"}}>Loading.....</h1>}
           {error && <h1 style={{color:"red"}}>Error occurred</h1>}
-          <div className={style.userDetails}>
-            <img src={data[0]?.owner.avatar_url} alt="" />
-            <div>
-              <h1>{data[0]?.owner.login}</h1>
-              <button onClick={handleFollowers}>Followers</button>
-            </div>
-          </div>
           <div className={style.repositories}>
             {data?.map((el) => (
               <div
