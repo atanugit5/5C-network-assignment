@@ -9,7 +9,8 @@ const Home = () => {
   const [user, setUser] = useState("");
   // const [data, setData] = useState([]);
   // const [follwers, setFollwers] = useState([]);
-  const [repo, setRepo] = useState(true);
+  const [repo, setRepo] = useState({});
+  const [status, setStatus] = useState(false);
 
 
   const dispatch=useDispatch();
@@ -21,7 +22,6 @@ const Home = () => {
   const [dataStatus, setDataStatus] = useState(false);
   const [follwerStatus, setFollowerStatus] = useState(false);
   const [repoStatus, setRepoStatus] = useState(false);
-  const [status, setStatus] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,14 +36,13 @@ const Home = () => {
     //     setData(res.data);
     //   })
     //   .then((err) => console.log("Error:", err));
-    setStatus(true)
     setDataStatus(true);
     setFollowerStatus(false);
     setRepoStatus(false);
+    setStatus(true)
   };
 
   const handleFollowers = () => {
-    // dispatch(followerFunc(user));
     // axios.get(data[0]?.owner?.followers_url).then((res) => {
     //   console.log("folowersRes:", res);
     //   setFollwers(res.data);
@@ -51,9 +50,12 @@ const Home = () => {
     setDataStatus(false);
     setFollowerStatus(true);
     setRepoStatus(false);
-    setRepo(!repo);
   };
-
+  const handleRepo = () => {
+    setDataStatus(true);
+    setFollowerStatus(false);
+    setRepoStatus(false);
+  };
   return (
     <div>
       <div>
@@ -68,19 +70,19 @@ const Home = () => {
       </div>
 
       {/* repositories list section */}
-      {status &&
-      <div className={style.userDetails}>
+      {status &&<div className={style.userDetails}>
             <img src={data[0]?.owner.avatar_url} alt="" />
             <div>
               <h1>{data[0]?.owner.login}</h1>
-              <button onClick={handleFollowers}>{repo?"Followers":"Repositories"}</button>
+              {(dataStatus||repoStatus)&&<button onClick={handleFollowers}>Go to Followers</button>}
+              {follwerStatus&&<button onClick={handleRepo}>Go to Repositories</button>}
             </div>
-          </div>
-      }
+          </div>}
       {dataStatus && (
         <div className={style.reposDiv}>
           {loading && <h1 style={{color:"green"}}>Loading.....</h1>}
           {error && <h1 style={{color:"red"}}>Error occurred</h1>}
+          
           <div className={style.repositories}>
             {data?.map((el) => (
               <div
