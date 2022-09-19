@@ -2,13 +2,22 @@ import React from "react";
 import { useState } from "react";
 import axios from "axios";
 import style from "../Styles/Home.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { followerFunc, userFunc } from "../Redux/action";
 
 const Home = () => {
   const [user, setUser] = useState("");
-  const [data, setData] = useState([]);
-  const [follwers, setFollwers] = useState([]);
+  // const [data, setData] = useState([]);
+  // const [follwers, setFollwers] = useState([]);
   const [repo, setRepo] = useState({});
 
+
+  const dispatch=useDispatch();
+  const data=useSelector((state)=>state.gitUser.repos);
+  const loading=useSelector((state)=>state.gitUser.loading);
+  const error=useSelector((state)=>state.gitUser.error);
+  const followers=useSelector((state)=>state.gitUser.followers);
+  //status change:-->
   const [dataStatus, setDataStatus] = useState(false);
   const [follwerStatus, setFollowerStatus] = useState(false);
   const [repoStatus, setRepoStatus] = useState(false);
@@ -17,26 +26,29 @@ const Home = () => {
     e.preventDefault();
     console.log("User:", user);
 
-    axios
-      .get(`https://api.github.com/users/${user}/repos`)
-      .then((res) => {
-        console.log("res:", res);
-        setDataStatus(true);
-        setFollowerStatus(false);
-        setRepoStatus(false);
-        setData(res.data);
-      })
-      .then((err) => console.log("Error:", err));
+    dispatch(userFunc(user));
+
+    // axios
+    //   .get(`https://api.github.com/users/${user}/repos`)
+    //   .then((res) => {
+    //     console.log("res:", res);
+    //     setData(res.data);
+    //   })
+    //   .then((err) => console.log("Error:", err));
+    setDataStatus(true);
+    setFollowerStatus(false);
+    setRepoStatus(false);
   };
 
   const handleFollowers = () => {
-    axios.get(data[0]?.owner?.followers_url).then((res) => {
-      console.log("folowersRes:", res);
-      setFollwers(res.data);
-      setDataStatus(false);
-      setFollowerStatus(true);
-      setRepoStatus(false);
-    });
+    dispatch(followerFunc(user));
+    // axios.get(data[0]?.owner?.followers_url).then((res) => {
+    //   console.log("folowersRes:", res);
+    //   setFollwers(res.data);
+    // });
+    setDataStatus(false);
+    setFollowerStatus(true);
+    setRepoStatus(false);
   };
 
   return (
@@ -55,6 +67,8 @@ const Home = () => {
       {/* repositories list section */}
       {dataStatus && (
         <div className={style.reposDiv}>
+          {loading && <h1 style={{color:"green"}}>Loading.....</h1>}
+          {error && <h1 style={{color:"red"}}>Error occurred</h1>}
           <div className={style.userDetails}>
             <img src={data[0]?.owner.avatar_url} alt="" />
             <div>
@@ -63,7 +77,7 @@ const Home = () => {
             </div>
           </div>
           <div className={style.repositories}>
-            {data.map((el) => (
+            {data?.map((el) => (
               <div
                 key={el.id}
                 onClick={() => {
@@ -88,7 +102,7 @@ const Home = () => {
       {/* followers section */}
       {follwerStatus && (
         <div className={style.followers}>
-          {follwers.map((el) => (
+          {followers?.map((el) => (
             <div key={el.id}>
               <a href={el.html_url} target="_blank">
                 <img src={el.avatar_url} alt="" />
